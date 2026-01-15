@@ -1,0 +1,15 @@
+{
+  "Container": {
+    "Type": "Multiple",
+    "Containers": [
+      {
+        "Type": "Single",
+        "Item": {
+          "ItemId": "Armor_Stand_Light",
+          "QuantityMax": 1,
+          "QuantityMin": 1
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "Type": "Generic",
+  "MotionControllerList": [
+    {
+      "Type": "Walk"
+    }
+  ],
+  "Appearance": "Armor_Stand_Light",
+  "MaxHealth": 5,
+  "DropList": "Drop_Armor_Stand_Light",
+  "Parameters": {
+    "MaxHealth": {
+      "Value": 5,
+      "Description": "Max health for the Armor Stand"
+    }
+  },
+  "Instructions": [
+    { }
+  ],
+  "InteractionInstruction": {
+    "Instructions": [
+      {
+        "Continue": true,
+        "Sensor": {
+          "Type": "Any"
+        },
+        "Actions": [
+          {
+            "Type": "SetInteractable",
+            "Interactable": true
+          }
+        ]
+      },
+      {
+        "Sensor": {
+          "Type": "HasInteracted"
+        },
+        "Instructions": [
+          {
+            "Actions": [
+              {
+                "Type": "InteractArmorStand"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "NameTranslationKey": "server.npcRoles.ArmorStand_ArmorStand.name"
+}

@@ -1,0 +1,58 @@
+{
+  "TranslationProperties": {
+    "Name": "items.Armor_Stand.name",
+    "Description": "Armor Stand"
+  },
+  "Icon": "Icons/ItemsGenerated/Armor_Stand.png",
+  "Categories": [
+    "Blocks.Deco"
+  ],
+  "Model": "NPC/MISC/Mannequin/Models/Model.blockymodel",
+  "Texture": "NPC/MISC/Mannequin/Models/Model_Default.png",
+  "Recipe": {
+    "Input": [
+      {
+        "ResourceTypeId": "Wood_Trunk",
+        "Quantity": 3
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "Furniture_Bench",
+        "Categories": [
+          "Furniture_Misc"
+        ]
+      }
+    ]
+  },
+  "IconProperties": {
+    "Scale": 0.25,
+    "Rotation": [
+      22.5,
+      45.0,
+      22.5
+    ],
+    "Translation": [
+      0.0,
+      -53.0
+    ]
+  },
+  "PlayerAnimationsId": "Stick",
+  "MaxStack": 16,
+  "Scale": 0.5,
+  "Interactions": {
+    "Primary": "Block_Primary",
+    "Secondary": {
+      "Interactions": [
+        {
+          "Type": "SpawnArmorStand"
+        },
+        {
+          "Type": "ModifyInventory",
+          "AdjustHeldItemQuantity": -1
+        }
+      ]
+    }
+  }
+}
