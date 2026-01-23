@@ -16,12 +16,16 @@ import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.entity.InteractionContext;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.modules.entity.component.HeadRotation;
+import com.hypixel.hytale.server.core.modules.entity.component.PropComponent;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.CooldownHandler;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.client.SimpleBlockInteraction;
+import com.hypixel.hytale.server.core.prefab.PrefabCopyableComponent;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
+import com.hypixel.hytale.server.core.universe.world.npc.INonPlayerCharacter;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.npc.NPCPlugin;
+import it.unimi.dsi.fastutil.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,9 +35,9 @@ public class SpawnArmorStandInteraction extends SimpleBlockInteraction {
 					SpawnArmorStandInteraction.class, SpawnArmorStandInteraction::new, SimpleBlockInteraction.CODEC
 			)
 			.documentation("Spawns an Armor Stand when right-clicked on a block")
-			.addField(new KeyedCodec<>("Light", Codec.BOOLEAN), (interaction, isLight) ->
+			.append(new KeyedCodec<>("Light", Codec.BOOLEAN), (interaction, isLight) ->
 							interaction.isLight = isLight,
-					interaction -> interaction.isLight)
+					interaction -> interaction.isLight).add()
 			.build();
 
 	public boolean isLight = false;
@@ -65,13 +69,18 @@ public class SpawnArmorStandInteraction extends SimpleBlockInteraction {
 					.get(i);
 			vector3d.add(0.0, variantBoxes.getBoundingBox().max.y - 0.5, 0.0);
 
-			commandBuffer.run(store -> this.spawnArmorStand(world.getEntityStore().getStore(), vector3d, rotation));
+			commandBuffer.run(_ -> this.spawnArmorStand(world.getEntityStore().getStore(), vector3d, rotation));
 		}
 	}
 
 	private void spawnArmorStand(@Nonnull Store<EntityStore> store, @Nonnull Vector3d position, @Nonnull Vector3f rotation) {
 		String npcType = this.isLight ? "Armor_Stand_Light" : "Armor_Stand";
-		NPCPlugin.get().spawnNPC(store, npcType, null, position, rotation);
+		Pair<Ref<EntityStore>, INonPlayerCharacter> pair = NPCPlugin.get().spawnNPC(store, npcType, null, position, rotation);
+		if (pair != null) {
+			Ref<EntityStore> ref = pair.first();
+			store.ensureComponent(ref, PropComponent.getComponentType());
+			store.ensureComponent(ref, PrefabCopyableComponent.getComponentType());
+		}
 	}
 
 	@Override
