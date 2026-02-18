@@ -14,9 +14,11 @@ import com.hypixel.hytale.protocol.InteractionType;
 import com.hypixel.hytale.server.core.asset.type.blockhitbox.BlockBoundingBoxes;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.entity.InteractionContext;
+import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.modules.entity.component.HeadRotation;
 import com.hypixel.hytale.server.core.modules.entity.component.PropComponent;
+import com.hypixel.hytale.server.core.modules.entity.tracker.NetworkId;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.CooldownHandler;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.client.SimpleBlockInteraction;
 import com.hypixel.hytale.server.core.prefab.PrefabCopyableComponent;
@@ -78,6 +80,8 @@ public class SpawnArmorStandInteraction extends SimpleBlockInteraction {
 		Pair<Ref<EntityStore>, INonPlayerCharacter> pair = NPCPlugin.get().spawnNPC(store, npcType, null, position, rotation);
 		if (pair != null) {
 			Ref<EntityStore> ref = pair.first();
+			store.ensureComponent(ref, UUIDComponent.getComponentType());
+			store.ensureComponent(ref, NetworkId.getComponentType());
 			store.ensureComponent(ref, PropComponent.getComponentType());
 			store.ensureComponent(ref, PrefabCopyableComponent.getComponentType());
 		}
