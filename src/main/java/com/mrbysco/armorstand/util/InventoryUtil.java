@@ -28,7 +28,7 @@ public class InventoryUtil {
 				if (inventory == null) return;
 
 				List<ItemStack> stacks = inventory.dropAllItemStacks();
-				if (stacks == null || stacks.isEmpty()) return;
+				if (stacks.isEmpty()) return;
 
 				for (ItemStack stack : stacks) {
 					if (stack == null) continue;
@@ -53,24 +53,28 @@ public class InventoryUtil {
 		if (dest == null) return false;
 		ItemStack held = context.getHeldItem();
 		if (held == null) return false;
+		ItemContainer heldContainer = context.getHeldItemContainer();
+		if (heldContainer == null) return false;
 
 		byte activeSlot = context.getHeldItemSlot();
 		MoveTransaction<?> tx;
 		if (targetSlot >= 0) {
-			tx = context.getHeldItemContainer().moveItemStackFromSlotToSlot(activeSlot, held.getQuantity(), dest, (byte) targetSlot);
+			tx = heldContainer.moveItemStackFromSlotToSlot(activeSlot, held.getQuantity(), dest, (byte) targetSlot);
 		} else {
-			tx = context.getHeldItemContainer().moveItemStackFromSlot(activeSlot, held.getQuantity(), dest);
+			tx = heldContainer.moveItemStackFromSlot(activeSlot, held.getQuantity(), dest);
 		}
-		return tx != null && tx.succeeded();
+		return tx.succeeded();
 	}
 
 	public static boolean removeFirstFromContainer(ItemContainer src, @Nonnull InteractionContext context) {
 		if (src == null) return false;
+		ItemContainer heldContainer = context.getHeldItemContainer();
+		if (heldContainer == null) return false;
 		for (byte i = 0; i < src.getCapacity(); i++) {
 			ItemStack stack = src.getItemStack(i);
 			if (stack == null) continue;
-			MoveTransaction<?> tx = src.moveItemStackFromSlot(i, stack.getQuantity(), context.getHeldItemContainer());
-			if (tx == null || !tx.succeeded()) {
+			MoveTransaction<?> tx = src.moveItemStackFromSlot(i, stack.getQuantity(), heldContainer);
+			if (!tx.succeeded()) {
 				context.getState().state = InteractionState.Failed;
 			}
 			return true;

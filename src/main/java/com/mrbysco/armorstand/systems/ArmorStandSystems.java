@@ -19,6 +19,7 @@ import com.mrbysco.armorstand.util.InventoryUtil;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 import java.util.Set;
 
 public class ArmorStandSystems {
@@ -53,7 +54,7 @@ public class ArmorStandSystems {
 				@Nonnull Store<EntityStore> store,
 				@Nonnull CommandBuffer<EntityStore> commandBuffer
 		) {
-			NPCEntity npcentity = commandBuffer.getComponent(ref, NPCEntity.getComponentType());
+			NPCEntity npcentity = commandBuffer.getComponent(ref, Objects.requireNonNull(NPCEntity.getComponentType()));
 
 			assert npcentity != null;
 

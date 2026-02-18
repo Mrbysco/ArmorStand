@@ -20,6 +20,7 @@ import com.mrbysco.armorstand.util.InteractUtil;
 import com.mrbysco.armorstand.util.InventoryUtil;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public class ActionInteractArmorStand extends ActionBase {
 
@@ -38,7 +39,7 @@ public class ActionInteractArmorStand extends ActionBase {
 		InteractionManager interactionmanager = store.getComponent(ref, InteractionModule.get().getInteractionManagerComponent());
 		assert interactionmanager != null;
 
-		NPCEntity npcentity = store.getComponent(ref, NPCEntity.getComponentType());
+		NPCEntity npcentity = store.getComponent(ref, Objects.requireNonNull(NPCEntity.getComponentType()));
 
 		assert npcentity != null;
 
