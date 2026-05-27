@@ -1,26 +1,25 @@
 {
-    "Group": "ArmorStand",
+    "Group": "com.mrbysco",
     "Name": "ArmorStand",
     "Version": "1.0.4",
     "Description": "Adds an Armor Stand to the game",
     "Authors": [
         {
             "Name": "Mrbysco"
-        },
-        {
-            "Name": "ShyNieke"
         }
     ],
     "Website": "https://www.curseforge.com/hytale/mods/armor-stand",
-    "ServerVersion": "2026.03.26-89796e57b",
+    "ServerVersion": ">=0.5.1 <0.6.0",
     "Dependencies": {
-        "Hytale:EntityModule": "*",
-        "Hytale:DamageModule": "*"
+        "Hytale:AssetModule": "*"
     },
     "OptionalDependencies": {
         
     },
     "DisabledByDefault": false,
     "Main": "com.mrbysco.armorstand.ArmorStandPlugin",
-    "IncludesAssetPack": true
+    "IncludesAssetPack": true,
+    "UpdateChecker": {
+        "CurseForge": "1428752"
+    }
 }
