@@ -6,12 +6,16 @@
     "Authors": [
         {
             "Name": "Mrbysco"
+        },
+        {
+            "Name": "ShyNieke"
         }
     ],
     "Website": "https://www.curseforge.com/hytale/mods/armor-stand",
     "ServerVersion": ">=0.5.1 <0.6.0",
     "Dependencies": {
-        "Hytale:AssetModule": "*"
+        "Hytale:EntityModule": "*",
+        "Hytale:DamageModule": "*"
     },
     "OptionalDependencies": {
         
