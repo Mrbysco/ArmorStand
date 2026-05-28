@@ -12,7 +12,7 @@
         }
     ],
     "Website": "https://www.curseforge.com/hytale/mods/armor-stand",
-    "ServerVersion": ">=0.5.1 <0.6.0",
+    "ServerVersion": ">=0.5.2 <0.6.0",
     "Dependencies": {
         "Hytale:EntityModule": "*",
         "Hytale:DamageModule": "*"
