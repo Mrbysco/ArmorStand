@@ -3,7 +3,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'com.azuredoom.hytale-tools' version '1.+'
-    id 'net.darkhax.curseforgegradle' version '1.3.32'
+    id 'net.darkhax.curseforgegradle' version '1.3.33'
 }
 
 javadoc {
