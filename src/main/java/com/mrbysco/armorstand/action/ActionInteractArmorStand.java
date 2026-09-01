@@ -13,11 +13,13 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.npc.asset.builder.BuilderSupport;
 import com.hypixel.hytale.server.npc.corecomponents.ActionBase;
 import com.hypixel.hytale.server.npc.entities.NPCEntity;
-import com.hypixel.hytale.server.npc.role.Role;
+import com.hypixel.hytale.server.npc.instructions.ExecutionSupport;
 import com.hypixel.hytale.server.npc.sensorinfo.InfoProvider;
 import com.mrbysco.armorstand.builder.BuilderInteractArmorStand;
 import com.mrbysco.armorstand.util.InteractUtil;
 import com.mrbysco.armorstand.util.InventoryUtil;
+import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -29,13 +31,13 @@ public class ActionInteractArmorStand extends ActionBase {
 	}
 
 	@Override
-	public boolean canExecute(@Nonnull Ref<EntityStore> ref, @Nonnull Role role, InfoProvider sensorInfo, double dt, @Nonnull Store<EntityStore> store) {
-		return super.canExecute(ref, role, sensorInfo, dt, store) && role.getStateSupport().getInteractionIterationTarget() != null;
+	public boolean canExecute(@NonNullDecl Ref<EntityStore> ref, @NonNullDecl ExecutionSupport executionSupport, @NullableDecl InfoProvider sensorInfo, double dt, @NonNullDecl Store<EntityStore> store) {
+		return super.canExecute(ref, executionSupport, sensorInfo, dt, store) && executionSupport.getStateSupport().getInteractionIterationTarget() != null;
 	}
 
 	@Override
-	public boolean execute(@Nonnull Ref<EntityStore> ref, @Nonnull Role role, InfoProvider sensorInfo, double dt, @Nonnull Store<EntityStore> store) {
-		super.execute(ref, role, sensorInfo, dt, store);
+	public boolean execute(@NonNullDecl Ref<EntityStore> ref, @NonNullDecl ExecutionSupport executionSupport, @NullableDecl InfoProvider sensorInfo, double dt, @NonNullDecl Store<EntityStore> store) {
+		super.execute(ref, executionSupport, sensorInfo, dt, store);
 		InteractionManager interactionmanager = store.getComponent(ref, InteractionModule.get().getInteractionManagerComponent());
 		assert interactionmanager != null;
 
@@ -43,7 +45,7 @@ public class ActionInteractArmorStand extends ActionBase {
 
 		assert npcentity != null;
 
-		Ref<EntityStore> targetRef = role.getStateSupport().getInteractionIterationTarget();
+		Ref<EntityStore> targetRef = executionSupport.getStateSupport().getInteractionIterationTarget();
 		if (targetRef == null) {
 			return false;
 		} else {
