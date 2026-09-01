@@ -1,2 +1,1 @@
-* Initial build published using CurseForgeGradle
-* Built against 0.5.2 
+* Built against 0.6.3
