@@ -22,7 +22,9 @@ import com.hypixel.hytale.server.core.modules.interaction.interaction.config.cli
 import com.hypixel.hytale.server.core.prefab.PrefabCopyableComponent;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
+import com.hypixel.hytale.server.core.universe.world.chunk.section.BlockSection;
 import com.hypixel.hytale.server.core.universe.world.npc.INonPlayerCharacter;
+import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.npc.NPCPlugin;
 import it.unimi.dsi.fastutil.Pair;
@@ -52,8 +54,8 @@ public class SpawnArmorStandInteraction extends SimpleBlockInteraction {
 		if (itemStack == null) return;
 
 		Ref<EntityStore> ref = context.getEntity();
-		Vector3d vector3d = new Vector3d(targetBlock);
-		vector3d.add(0.5, 0.5, 0.5);
+		Vector3d targetPosition = new Vector3d(targetBlock);
+		targetPosition.add(0.5, 0.5, 0.5);
 
 		Rotation3f rotation = new Rotation3f();
 		HeadRotation headRotation = commandBuffer.getComponent(ref, HeadRotation.getComponentType());
@@ -62,16 +64,23 @@ public class SpawnArmorStandInteraction extends SimpleBlockInteraction {
 			rotation.setYaw(headRotation.getRotation().yaw() + (float) (Math.PI / 180.0) * 180.0F);
 		}
 
-		WorldChunk worldchunk = world.getChunkIfInMemory(ChunkUtil.indexChunkFromBlock(targetBlock.x, targetBlock.z));
-		if (worldchunk != null) {
-			BlockType blockType = worldchunk.getBlockType(targetBlock);
-			@SuppressWarnings("removal") int i = worldchunk.getRotationIndex(targetBlock.x, targetBlock.y, targetBlock.z);
-			BlockBoundingBoxes.RotatedVariantBoxes variantBoxes = BlockBoundingBoxes.getAssetMap()
-					.getAsset(blockType.getHitboxTypeIndex())
-					.get(i);
-			vector3d.add(0.0, variantBoxes.getBoundingBox().max.y - 0.5, 0.0);
+		ChunkStore chunkStore = world.getChunkStore();
+		int x = targetBlock.x();
+		int y = targetBlock.y();
+		int z = targetBlock.z();
+		Ref<ChunkStore> sectionRef = chunkStore.getChunkSectionReferenceAtBlock(x, y, z);
+		if (sectionRef != null && sectionRef.isValid()) {
+			BlockSection blockSection = chunkStore.getStore().getComponent(sectionRef, BlockSection.getComponentType());
+			if (blockSection != null) {
+				BlockType blockType = BlockType.getAssetMap().getAsset(blockSection.get(x, y, z));
+				int blockRotation = blockSection.getRotationIndex(x, y, z);
+				BlockBoundingBoxes.RotatedVariantBoxes variantBoxes = BlockBoundingBoxes.getAssetMap()
+						.getAsset(blockType.getHitboxTypeIndex())
+						.get(blockRotation);
+				targetPosition.add(0.0, variantBoxes.getBoundingBox().max.y - 0.5, 0.0);
 
-			commandBuffer.run(_ -> this.spawnArmorStand(world.getEntityStore().getStore(), vector3d, rotation));
+				commandBuffer.run(_ -> this.spawnArmorStand(world.getEntityStore().getStore(), targetPosition, rotation));
+			}
 		}
 	}
 
